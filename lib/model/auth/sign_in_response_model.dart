@@ -1,6 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:json_annotation/json_annotation.dart';
-import 'package:pathfinder/model/user/user_model.dart';
+import 'package:step_wise/model/user/user_model.dart';
 import 'package:vexana/vexana.dart';
 
 part 'sign_in_response_model.g.dart';
