@@ -1,6 +1,6 @@
 class APIConst {
   static const String baseUrl =
-      'http://step_wise-dev.eba-55f84mu8.eu-central-1.elasticbeanstalk.com';
+      'http://10.0.2.2:8080';
   static const String _api = '/api';
 
   /// Auth

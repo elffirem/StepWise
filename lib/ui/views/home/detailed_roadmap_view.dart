@@ -196,7 +196,7 @@ class _DetailedRoadmapViewState extends State<DetailedRoadmapView>
                             isChecked: phase.topics![index].isChecked,
                             title:
                                 phase.topics![index].title ?? "No title found",
-                            url: phase.topics![index].resources != null
+                            url: phase.topics![index].resources != null && phase.topics![index].resources!.isNotEmpty
                                 ? phase.topics![index].resources![0].link
                                 : null,
                           );
