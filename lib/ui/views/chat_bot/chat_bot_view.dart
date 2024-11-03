@@ -22,7 +22,7 @@ class _ChatBotViewState extends State<ChatBotView> with ChatBotMixin {
     return Scaffold(
       appBar: AppBar(
         title: const Text(
-          'step_wise',
+          'Step Wise',
           style: TextStyle(fontWeight: FontWeight.bold),
         ),
         automaticallyImplyLeading: true,

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:step_wise/model/roadmap/roadmap_model.dart';
 import 'package:step_wise/ui/views/home/detailed_roadmap_view.dart';
 
@@ -14,7 +13,7 @@ class DetailedRoadmapScreen extends StatelessWidget {
       length: 2,
       child: Scaffold(
         appBar: AppBar(
-          title: const Text('step_wise'),
+          title: const Text('Step Wise'),
           bottom: const TabBar(
             tabs: [
               Tab(text: 'Roadmap'),

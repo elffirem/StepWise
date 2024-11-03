@@ -32,7 +32,7 @@ class OnboardingController extends GetxController {
     var fetchedData = [
       OnboardingPageModel(
         title: "Welcome",
-        description: "to step_wise",
+        description: "to Step Wise",
         assetPaths: ["assets/images/onboard/bunny.png"],
         positions: [
           const Offset(0.3, 0.1),
@@ -40,7 +40,7 @@ class OnboardingController extends GetxController {
       ),
       OnboardingPageModel(
         title: "Create",
-        description: "with step_wise",
+        description: "with Step Wise",
         assetPaths: [
           "assets/images/onboard/road1.png",
           "assets/images/onboard/bunny.png",
@@ -52,7 +52,7 @@ class OnboardingController extends GetxController {
       ),
       OnboardingPageModel(
         title: "Grow",
-        description: "with step_wise",
+        description: "with Step Wise",
         assetPaths: [
           "assets/images/onboard/road2.png",
           "assets/images/onboard/bunny.png",
@@ -63,13 +63,13 @@ class OnboardingController extends GetxController {
         ],
       ),
       OnboardingPageModel(
-        title: "Hello! I'm step_wise.",
+        title: "Hello! I'm Step Wise.",
         description: "What's your name?",
         assetPaths: [],
         positions: [],
       ),
       OnboardingPageModel(
-        title: "What is your purpose for using step_wise?",
+        title: "What is your purpose for using Step Wise?",
         description: "",
         assetPaths: [],
         positions: [],
