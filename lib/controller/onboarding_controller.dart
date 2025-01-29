@@ -63,29 +63,30 @@ class OnboardingController extends GetxController {
         ],
       ),
       OnboardingPageModel(
-        title: "Hello! I'm Step Wise.",
-        description: "What's your name?",
-        assetPaths: [],
-        positions: [],
-      ),
-      OnboardingPageModel(
-        title: "What is your purpose for using Step Wise?",
+        title: """Hello! I’m PathFinder. I will create schudules and study plans for you.
+Let's start by your name! """,
         description: "",
         assetPaths: [],
         positions: [],
       ),
       OnboardingPageModel(
-        title: "Could you please provide your professional background?",
+        title: "What is your purpose for using PathFinder?",
         description: "",
         assetPaths: [],
         positions: [],
       ),
-      OnboardingPageModel(
-        title: "What do you want to learn?",
-        description: "",
-        assetPaths: [],
-        positions: [],
-      ),
+      // OnboardingPageModel(
+      //   title: "Could you please provide your professional background?",
+      //   description: "",
+      //   assetPaths: [],
+      //   positions: [],
+      // ),
+      // OnboardingPageModel(
+      //   title: "What do you want to learn?",
+      //   description: "",
+      //   assetPaths: [],
+      //   positions: [],
+      // ),
     ];
 
     onboardingPages.assignAll(fetchedData);

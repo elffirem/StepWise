@@ -35,10 +35,15 @@ class _OnboardingViewState extends State<OnboardingView> with OnboardingMixin {
               .onboardingPages[onboardingController.currentPage.value];
           return Stack(
             children: [
-              bgImage(),
-              bgBlur(),
+              //           bgImage(),
+              //           bgBlur(),
+              Positioned.fill(
+                child: Container(
+                  color: Colors.white,
+                ),
+              ),
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: mPadding),
+                padding: const EdgeInsets.symmetric(horizontal: sPadding),
                 child: SingleChildScrollView(
                   child: SizedBox(
                     height: context.height,
@@ -47,7 +52,7 @@ class _OnboardingViewState extends State<OnboardingView> with OnboardingMixin {
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
                         Expanded(
-                          flex: 3,
+                          flex: 6,
                           child: Column(
                             crossAxisAlignment:
                                 onboardingController.currentPage.value < 3
@@ -57,6 +62,7 @@ class _OnboardingViewState extends State<OnboardingView> with OnboardingMixin {
                             children: [
                               if (onboardingController.currentPage.value < 3)
                                 ...firstPartOnboarding(page)
+                              
                               else
                                 ...secondPartOnboarding(page),
                               if (onboardingController.currentPage.value == 3)
@@ -73,48 +79,56 @@ class _OnboardingViewState extends State<OnboardingView> with OnboardingMixin {
                         Expanded(
                           flex: 1,
                           child: Column(
-                            children: [
-                              Stack(
-                                alignment: Alignment.center,
-                                children: [
-                                  Row(
+                            children: [                               
+                              GestureDetector(
+                                onTap: () {
+                                  if (onboardingController
+                                          .currentPage.value ==
+                                      6) {
+                                    Get.to(
+                                      () => SignUpView(
+                                        createRoadmapRequestModel:
+                                            CreateRoadmapRequestModel(
+                                          goal: onboardingController
+                                              .selectedLearningTopic.value,
+                                          professionalBackground:
+                                              onboardingController
+                                                  .professionalBackgroundController
+                                                  .text,
+                                        ),
+                                        signUpRequestModel:
+                                            SignUpRequestModel(
+                                          fullName: onboardingController
+                                              .nameController.text,
+                                          purpose:
+                                              onboardingController.goal.value,
+                                        ),
+                                      ),
+                                    );
+                                  } else {
+                                    onboardingController.nextPage();
+                                  }
+                                },
+                                
+                                child: const CustomButton(
+                                  height: 60,
+                                  width: 200,
+                                  title: nextButtonText,
+                                ),
+                              ),
+                              30.h,
+                              Row(
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: List.generate(
                                       onboardingController
                                           .onboardingPages.length,
                                       (index) => Obx(() {
                                         return Column(
-                                          children: [
-                                            Visibility(
-                                              replacement: const SizedBox(
-                                                width: 10,
-                                                height: 50,
-                                              ),
-                                              visible: onboardingController
-                                                          .currentPage.value ==
-                                                      index &&
-                                                  onboardingController
-                                                          .currentPage.value >=
-                                                      3,
-                                              child: Image.asset(
-                                                'assets/images/onboard/bunny.png',
-                                                width: 50,
-                                                height: 50,
-                                                errorBuilder: (context, error,
-                                                    stackTrace) {
-                                                  return const Icon(
-                                                      Icons.error);
-                                                },
-                                              ),
-                                            ),
-                                            const SizedBox(
-                                              height:
-                                                  4.0, // padding between asset and dot
-                                            ),
+                                          children: [                                                                                     
                                             Container(
                                               margin:
                                                   const EdgeInsets.symmetric(
-                                                      horizontal: 8.0),
+                                                      horizontal: 8.0,),
                                               width: 10.0,
                                               height: 10.0,
                                               decoration: BoxDecoration(
@@ -133,50 +147,13 @@ class _OnboardingViewState extends State<OnboardingView> with OnboardingMixin {
                                       }),
                                     ),
                                   ),
-                                ],
-                              ),
-                              30.h,
-                              Align(
-                                alignment: Alignment.bottomCenter,
-                                child: GestureDetector(
-                                  onTap: () {
-                                    if (onboardingController
-                                            .currentPage.value ==
-                                        6) {
-                                      Get.to(
-                                        () => SignUpView(
-                                          createRoadmapRequestModel:
-                                              CreateRoadmapRequestModel(
-                                            goal: onboardingController
-                                                .selectedLearningTopic.value,
-                                            professionalBackground:
-                                                onboardingController
-                                                    .professionalBackgroundController
-                                                    .text,
-                                          ),
-                                          signUpRequestModel:
-                                              SignUpRequestModel(
-                                            fullName: onboardingController
-                                                .nameController.text,
-                                            purpose:
-                                                onboardingController.goal.value,
-                                          ),
-                                        ),
-                                      );
-                                    } else {
-                                      onboardingController.nextPage();
-                                    }
-                                  },
-                                  child: const CustomButton(
-                                    height: 40,
-                                    width: 120,
-                                    title: nextButtonText,
-                                  ),
-                                ),
-                              ),
+                                
+                              
+                             
                             ],
                           ),
                         ),
+                   
                       ],
                     ),
                   ),
@@ -350,71 +327,71 @@ class _OnboardingViewState extends State<OnboardingView> with OnboardingMixin {
     );
   }
 
-Widget learningDepartmentInput() {
-  return Column(
-    crossAxisAlignment: CrossAxisAlignment.start,
-    children: [
-      const Text(
-        "This will help us light up the path for your learning journey! 💡",
-        style: TextStyle(
-            fontSize: 18,
-            color: Color.fromARGB(255, 218, 120, 55),
-            fontWeight: FontWeight.bold),
-      ),
-      const SizedBox(height: 16),
-      Center(
-        child: Obx(() {
-          return Container(
-            padding: const EdgeInsets.symmetric(horizontal: 12.0),
-            decoration: BoxDecoration(
-              border: Border.all(
-                color: Colors.grey,
-                width: 1.0,
+  Widget learningDepartmentInput() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const Text(
+          "This will help us light up the path for your learning journey! 💡",
+          style: TextStyle(
+              fontSize: 18,
+              color: Color.fromARGB(255, 218, 120, 55),
+              fontWeight: FontWeight.bold),
+        ),
+        const SizedBox(height: 16),
+        Center(
+          child: Obx(() {
+            return Container(
+              padding: const EdgeInsets.symmetric(horizontal: 12.0),
+              decoration: BoxDecoration(
+                border: Border.all(
+                  color: Colors.grey,
+                  width: 1.0,
+                ),
+                borderRadius: BorderRadius.circular(8.0),
               ),
-              borderRadius: BorderRadius.circular(8.0),
-            ),
-            child: DropdownButton<String>(
-              value: onboardingController.learningTopics.contains(
-                          onboardingController.selectedLearningTopic.value)
-                  ? onboardingController.selectedLearningTopic.value
-                  : null,
-              items: onboardingController.learningTopics.map((String value) {
-                return DropdownMenuItem<String>(
-                  value: value,
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 10.0),
-                    child: Text(
-                      value,
-                      style: const TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w600,
-                        color: Colors.black,
+              child: DropdownButton<String>(
+                value: onboardingController.learningTopics.contains(
+                        onboardingController.selectedLearningTopic.value)
+                    ? onboardingController.selectedLearningTopic.value
+                    : null,
+                items: onboardingController.learningTopics.map((String value) {
+                  return DropdownMenuItem<String>(
+                    value: value,
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 10.0),
+                      child: Text(
+                        value,
+                        style: const TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w600,
+                          color: Colors.black,
+                        ),
                       ),
                     ),
-                  ),
-                );
-              }).toList(),
-              onChanged: (newValue) {
-                onboardingController.selectedLearningTopic.value = newValue!;
-              },
-              underline: Container(
-                height: 0,
+                  );
+                }).toList(),
+                onChanged: (newValue) {
+                  onboardingController.selectedLearningTopic.value = newValue!;
+                },
+                underline: Container(
+                  height: 0,
+                ),
+                icon: const Icon(Icons.arrow_drop_down, color: Colors.black),
+                style: const TextStyle(
+                  fontSize: 16,
+                  color: Colors.black,
+                  fontWeight: FontWeight.w600,
+                ),
+                dropdownColor: Colors.white,
+                isExpanded: true,
               ),
-              icon: const Icon(Icons.arrow_drop_down, color: Colors.black),
-              style: const TextStyle(
-                fontSize: 16,
-                color: Colors.black,
-                fontWeight: FontWeight.w600,
-              ),
-              dropdownColor: Colors.white,
-              isExpanded: true,
-            ),
-          );
-        }),
-      ),
-    ],
-  );
-}
+            );
+          }),
+        ),
+      ],
+    );
+  }
 
   Widget professionalBackgroundInput() {
     return TextField(
@@ -439,42 +416,75 @@ Widget learningDepartmentInput() {
     );
   }
 
-  Widget aimInput(OnboardingPageModel page) {
-    final CardModel createModel = CardModel(
+   Widget aimInput(OnboardingPageModel page) {
+    final CardModel schoolModel = CardModel(
       imagePath: 'assets/images/aim/create.png',
-      title: 'Create',
-      subtitle: 'Build a Resume, Write a Cover Letter, etc.',
+      title: 'School',
+    
     );
 
-    final CardModel growModel = CardModel(
+    final CardModel programmingModel = CardModel(
       imagePath: 'assets/images/aim/grow.png',
-      title: 'Grow',
-      subtitle: 'Learn new skills, Improve yourself, etc.',
+      title: 'Programming',
+    );
+    final CardModel examPrepModel = CardModel(
+      imagePath: 'assets/images/aim/create.png',
+      title: 'Exam Prep',
+    
+    );
+
+    final CardModel otherModel = CardModel(
+      imagePath: 'assets/images/aim/grow.png',
+      title: 'Other',
     );
 
     return Column(
       children: [
-        lPadding.h,
+        mPadding.h,
         GestureDetector(
           onTap: () {
-            onboardingController.setPurpose("Create");
+            onboardingController.setPurpose("School");
           },
           child: purposeCard(
-            createModel,
-            onboardingController.goal.value == "Create"
-                ? Colors.blueGrey.withOpacity(0.2)
+            schoolModel,
+            onboardingController.goal.value == "School"
+                ? Colors.white
                 : null,
           ),
         ),
         12.h,
         GestureDetector(
           onTap: () {
-            onboardingController.setPurpose("Grow");
+            onboardingController.setPurpose("Programming");
           },
           child: purposeCard(
-            growModel,
-            onboardingController.goal.value == "Grow"
-                ? Colors.blueGrey.withOpacity(0.2)
+            programmingModel,
+            onboardingController.goal.value == "Programming"
+                ? Colors.white
+                : null,
+          ),
+        ),
+        12.h,
+        GestureDetector(
+          onTap: () {
+            onboardingController.setPurpose("Exam Prep");
+          },
+          child: purposeCard(
+            examPrepModel,
+            onboardingController.goal.value == "Exam Prep"
+                ? Colors.white
+                : null,
+          ),
+        ),
+        12.h,
+        GestureDetector(
+          onTap: () {
+            onboardingController.setPurpose("Other");
+          },
+          child: purposeCard(
+            otherModel,
+            onboardingController.goal.value == "Other"
+                ? Colors.white
                 : null,
           ),
         ),
@@ -486,32 +496,22 @@ Widget learningDepartmentInput() {
     return CustomCard(
       height: smallCardSize,
       color: color,
-      child: Row(
-        children: <Widget>[
-          ClipRRect(
+      child: 
+      Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: <Widget>[   
+          Text(
+                model.title,
+                style: cardTextStyle
+              ),
+           
+         ClipRRect(
             borderRadius: BorderRadius.circular(16),
             child: Image.asset(model.imagePath),
           ),
-          const SizedBox(width: 20),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Text(
-                  model.title,
-                  style: subheadlineTextStyle.copyWith(fontSize: 14),
-                ),
-                const SizedBox(height: 4),
-                Text(
-                  model.subtitle,
-                  style: captionTextStyle.copyWith(
-                      fontSize: 14, color: Colors.black54),
-                ),
-              ],
-            ),
-          ),
         ],
       ),
+   
     );
   }
 
@@ -523,8 +523,26 @@ Widget learningDepartmentInput() {
         decoration: const InputDecoration(
           labelText: "Your full name",
           filled: true,
-          fillColor: Colors.white,
+          fillColor: cardColor,
           border: OutlineInputBorder(
+            borderRadius: BorderRadius.all(
+              Radius.circular(15),
+            ),
+            borderSide: BorderSide(
+              width: 2,
+              color:primaryColor,
+            ),
+          ),
+          enabledBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.all(
+              Radius.circular(15),
+            ),
+            borderSide: BorderSide(
+              width: 2,
+              color: primaryColor,
+            ),
+          ),
+          focusedBorder: OutlineInputBorder(
             borderRadius: BorderRadius.all(
               Radius.circular(15),
             ),
@@ -535,6 +553,7 @@ Widget learningDepartmentInput() {
           ),
         ),
       ),
+    
     ];
   }
 }

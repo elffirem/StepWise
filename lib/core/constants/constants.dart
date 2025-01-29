@@ -7,6 +7,7 @@ const Color primaryColor=Color(0xff03346E);
 const Color secondaryColor =Color(0xFF2C878C);
 const Color backgroundColor = Color(0xFFF7FCFF);
 const Color greyColor = Color(0xFFC4CACD);
+const Color cardColor = Color(0xFFFFF8E3);
 
 
 // Temel Text Style'lar
@@ -17,9 +18,9 @@ const TextStyle buttonTextStyle = TextStyle(
 );
 
 const TextStyle headlineTextStyle = TextStyle(
-  color: primaryColor,
+  color: Colors.black,
   fontWeight: FontWeight.w600,
-  fontSize: 24,
+  fontSize: 20,
 );
 
 
@@ -27,6 +28,12 @@ const TextStyle subheadlineTextStyle = TextStyle(
   color: primaryColor,
   fontWeight: FontWeight.w600,
   fontSize: 18,
+);
+
+const TextStyle cardTextStyle = TextStyle(
+  color: Colors.black,
+  fontWeight: FontWeight.w700,
+  fontSize: 20,
 );
 
 const TextStyle bodyTextStyle = TextStyle(
@@ -70,7 +77,7 @@ const double xxlPadding=64;
 
 
 //Size
-const double smallCardSize=120;
+const double smallCardSize=100;
 const double smallPlusCardSize=140;
 const double mediumCardSize=180;
 const double mediumPlusCardSize=200;
