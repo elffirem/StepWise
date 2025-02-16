@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 
 //Color 
 const Color primaryColor=Color(0xff03346E);
-const Color secondaryColor =Color(0xFF2C878C);
+const Color secondaryColor =Color(0xFF6EACDA);
 const Color backgroundColor = Color(0xFFF7FCFF);
 const Color greyColor = Color(0xFFC4CACD);
 const Color cardColor = Color(0xFFFFF8E3);
