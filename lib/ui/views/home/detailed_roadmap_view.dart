@@ -142,12 +142,15 @@ class _DetailedRoadmapViewState extends State<DetailedRoadmapView>
     );
   }
 
-  Column buildList() {
-    var phases = widget.roadmapModel.phases;
+  Widget buildList() {
+    final phases = widget.roadmapModel?.phases;
+    if (phases == null) {
+      return const SizedBox();
+    }
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: List.generate(
-        phases!.length,
+        phases.length,
         (index) {
           var phase = phases[index];
           return buildIndex(index, phase, phases.length);
