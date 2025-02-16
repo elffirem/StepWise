@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:step_wise/controller/onboarding_controller.dart';
 import 'package:step_wise/controller/roadmap_controller.dart';
 import 'package:step_wise/core/constants/constants.dart';
@@ -10,7 +11,6 @@ import 'package:step_wise/model/roadmap/roadmap_topic.dart';
 import 'package:step_wise/ui/components/custom_card.dart';
 import 'package:step_wise/ui/components/timeline_painter.dart';
 import 'package:step_wise/ui/views/onboarding/onboarding_view.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../../model/roadmap/roadmap_model.dart';
@@ -18,7 +18,7 @@ import '../../../model/roadmap/roadmap_model.dart';
 part 'detailed_roadmap_mixin.dart';
 
 class DetailedRoadmapView extends StatefulWidget {
-  final RoadmapModel roadmapModel;
+  final RoadmapModel? roadmapModel;
 
   const DetailedRoadmapView({super.key, required this.roadmapModel});
 
@@ -40,18 +40,19 @@ class _DetailedRoadmapViewState extends State<DetailedRoadmapView>
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        body: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              _buildHeader(),
-              Padding(
-                padding: const EdgeInsets.only(right: mPadding, left: lPadding),
-                child: buildList(),
+        body: widget.roadmapModel == null
+            ? const Center(child: CircularProgressIndicator())
+            : Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  _buildHeader(),
+                  Padding(
+                    padding:
+                        const EdgeInsets.only(right: mPadding, left: lPadding),
+                    child: buildList(),
+                  ),
+                ],
               ),
-            ],
-          ),
-        ),
       ),
     );
   }
@@ -196,7 +197,8 @@ class _DetailedRoadmapViewState extends State<DetailedRoadmapView>
                             isChecked: phase.topics![index].isChecked,
                             title:
                                 phase.topics![index].title ?? "No title found",
-                            url: phase.topics![index].resources != null && phase.topics![index].resources!.isNotEmpty
+                            url: phase.topics![index].resources != null &&
+                                    phase.topics![index].resources!.isNotEmpty
                                 ? phase.topics![index].resources![0].link
                                 : null,
                           );

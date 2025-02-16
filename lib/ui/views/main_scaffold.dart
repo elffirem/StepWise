@@ -63,18 +63,16 @@ class _MainScaffoldState extends State<MainScaffold> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: _roadmapModel == null
-          ? const Center(child: CircularProgressIndicator())
-          : PageView(
-              controller: _pageController,
-              onPageChanged: _onPageChanged,
-              children: [
-                DetailedRoadmapView(roadmapModel: _roadmapModel!),
-                const ChatBotView(),
-                const ToolsView(),
-                const MoodSelectionView(),
-              ],
-            ),
+      body: PageView(
+        controller: _pageController,
+        onPageChanged: _onPageChanged,
+        children: [
+          DetailedRoadmapView(roadmapModel: _roadmapModel),
+          const ChatBotView(),
+          const ToolsView(),
+          const MoodSelectionView(),
+        ],
+      ),
       bottomNavigationBar: Obx(
         () {
           final currentIndex =
