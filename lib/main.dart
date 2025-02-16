@@ -2,7 +2,10 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:step_wise/controller/task_controller.dart';
+import 'package:step_wise/ui/views/todo_view/todo_view.dart';
 
 import 'controller/navigation_controller.dart';
 import 'core/constants/constants.dart';
@@ -10,9 +13,14 @@ import 'core/init/service_locator/service_locator.dart';
 import 'ui/views/authentications/auth_check/auth_check_view.dart';
 
 Future<void> main() async {
+ WidgetsFlutterBinding.ensureInitialized(); // 2) Binding'i başlat
+  await GetStorage.init(); 
+
   HttpOverrides.global = MyHttpOverrides();
   await ServiceLocator.instance.init();
   Get.put(NavigationController());
+  Get.put(TaskController());
+
 
   runApp(const MyApp());
 }
@@ -30,7 +38,7 @@ class MyApp extends StatelessWidget {
           textTheme: GoogleFonts.soraTextTheme(),
           scaffoldBackgroundColor: backgroundColor,
           appBarTheme: const AppBarTheme(color: backgroundColor)),
-      home: const AuthCheckView(),
+      home:  const AuthCheckView()
     );
   }
 }
