@@ -12,8 +12,10 @@ mixin AuthCheckViewMixin on State<AuthCheckView> {
     try {
       final sharedPreferencesManager = SharedPreferencesManager();
       await sharedPreferencesManager.init();
-      String? token = sharedPreferencesManager.getString('token');
-      if (token != null && token.isNotEmpty) {
+      // String? token = sharedPreferencesManager.getString('token');
+      const String token = "mockedToken";
+
+      if (token.isNotEmpty) {
         networkManager.setToken(token);
       }
       WidgetsBinding.instance.addPostFrameCallback(
@@ -21,7 +23,7 @@ mixin AuthCheckViewMixin on State<AuthCheckView> {
           Navigator.pushReplacement(
             context,
             MaterialPageRoute(
-              builder: (context) => (token == null || token.isEmpty)
+              builder: (context) => (token.isEmpty)
                   ? const OnboardingView()
                   : const MainScaffold(),
             ),
