@@ -9,6 +9,7 @@ import 'package:step_wise/model/roadmap/roadmap_phase.dart';
 import 'package:step_wise/model/roadmap/roadmap_topic.dart';
 import 'package:step_wise/ui/components/custom_card.dart';
 import 'package:step_wise/ui/components/timeline_painter.dart';
+import 'package:step_wise/ui/views/old_onboarding_view.dart/onboarding_view.dart';
 import 'package:step_wise/ui/views/onboarding/onboarding_view.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -56,7 +57,20 @@ class _DetailedRoadmapViewState extends State<DetailedRoadmapView>
     );
   }
 
-  Widget _buildHeader() {
+  Column buildList() {
+    var phases = widget.roadmapModel.phases;
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: List.generate(
+        phases!.length,
+        (index) {
+          var phase = phases[index];
+          return buildIndex(index, phase, phases.length);
+        },
+      ),
+    );
+  }
+   Widget _buildHeader() {
     return Container(
       color: primaryColor,
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
@@ -141,64 +155,56 @@ class _DetailedRoadmapViewState extends State<DetailedRoadmapView>
     );
   }
 
-  Column buildList() {
-    var phases = widget.roadmapModel.phases;
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: List.generate(
-        phases!.length,
-        (index) {
-          var phase = phases[index];
-          return buildIndex(index, phase, phases.length);
-        },
-      ),
-    );
-  }
 
   Row buildIndex(int index, RoadmapPhase phase, int totalPhases) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
-        SizedBox(
-          height: bigCardSize * 1.45,
-          child: CustomPaint(
-            painter: TimelinePainter(
-              isFirst: index == 0,
-              isLast: index == totalPhases - 1,
-            ),
-          ),
-        ),
-        const SizedBox(width: 24),
+        // SizedBox(
+        //   height: bigCardSize * 1.45,
+        //   child: CustomPaint(
+        //     painter: TimelinePainter(
+        //       isFirst: index == 0,
+        //       isLast: index == totalPhases - 1,
+        //     ),
+        //   ),
+        // ),
+        // const SizedBox(width: 24),
         Expanded(
           child: Column(
             children: [
               Padding(
-                padding: const EdgeInsets.all(8),
+                padding: const EdgeInsets.only(top:15,bottom:15),
                 child: Text(
                   phase.title ?? "${index + 1}th Phase",
                   textAlign: TextAlign.start,
                   style: subheadlineTextStyle.copyWith(color: Colors.black),
                 ),
               ),
-              CustomCard(
-                height: bigCardSize,
+              SizedBox(
+                height: calculatePhaseHeight(phase),
                 child: FutureBuilder(
                   future: _loadCheckedState(phase.topics!),
                   builder: (context, snapshot) {
                     if (snapshot.connectionState == ConnectionState.done) {
                       return ListView.separated(
+                     physics: const NeverScrollableScrollPhysics(),
                         itemCount: phase.topics!.length,
                         itemBuilder: (context, index) {
-                          return ResourceItem(
-                            onCheckedChanged: (bool isChecked) {
-                              controller.toggleChecked(phase, index);
-                            },
-                            isChecked: phase.topics![index].isChecked,
-                            title:
-                                phase.topics![index].title ?? "No title found",
-                            url: phase.topics![index].resources != null && phase.topics![index].resources!.isNotEmpty
-                                ? phase.topics![index].resources![0].link
-                                : null,
+                          return CustomCard(
+                            color: cardColor,
+                            height:smallCardSize ,
+                            child: ResourceItem(
+                              onCheckedChanged: (bool isChecked) {
+                                controller.toggleChecked(phase, index);
+                              },
+                              isChecked: phase.topics![index].isChecked,
+                              title:
+                                  phase.topics![index].title ?? "No title found",
+                              url: phase.topics![index].resources != null && phase.topics![index].resources!.isNotEmpty
+                                  ? phase.topics![index].resources![0].link
+                                  : null,
+                            ),
                           );
                         },
                         separatorBuilder: (context, index) {
@@ -253,6 +259,10 @@ class _DetailedRoadmapViewState extends State<DetailedRoadmapView>
     SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.setDouble('progress', progress);
   }
+  
+   double calculatePhaseHeight(RoadmapPhase phase) {
+      return (phase.topics!.length)*(120+25);
+   }
 }
 
 class ResourceItem extends StatelessWidget {
@@ -289,12 +299,15 @@ class ResourceItem extends StatelessWidget {
         Expanded(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                title,
-                style: const TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold,
+            children: [             
+              Padding(
+                padding: const EdgeInsets.only(top:8.0),
+                child: Text(
+                  title,
+                  style: const TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
               ),
               if (url != null)

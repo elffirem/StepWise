@@ -4,7 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:step_wise/controller/focus_mode_controller.dart';
 import 'package:step_wise/controller/task_controller.dart';
+import 'package:step_wise/ui/views/focus/focus_mode_view.dart';
 import 'package:step_wise/ui/views/todo_view/todo_view.dart';
 
 import 'controller/navigation_controller.dart';
@@ -20,6 +22,7 @@ Future<void> main() async {
   await ServiceLocator.instance.init();
   Get.put(NavigationController());
   Get.put(TaskController());
+   Get.put(FocusModeController());
 
 
   runApp(const MyApp());
@@ -38,7 +41,8 @@ class MyApp extends StatelessWidget {
           textTheme: GoogleFonts.soraTextTheme(),
           scaffoldBackgroundColor: backgroundColor,
           appBarTheme: const AppBarTheme(color: backgroundColor)),
-      home:  const AuthCheckView()
+      home: const FocusModeView()
+     // home: const TodoView()
     );
   }
 }
