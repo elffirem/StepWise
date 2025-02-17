@@ -41,7 +41,7 @@ class MyApp extends StatelessWidget {
           textTheme: GoogleFonts.soraTextTheme(),
           scaffoldBackgroundColor: backgroundColor,
           appBarTheme: const AppBarTheme(color: backgroundColor)),
-      home: const FocusModeView()
+      home: const AuthCheckView()
      // home: const TodoView()
     );
   }

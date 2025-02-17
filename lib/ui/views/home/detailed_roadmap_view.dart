@@ -9,7 +9,6 @@ import 'package:step_wise/model/roadmap/roadmap_phase.dart';
 import 'package:step_wise/model/roadmap/roadmap_topic.dart';
 import 'package:step_wise/ui/components/custom_card.dart';
 import 'package:step_wise/ui/components/timeline_painter.dart';
-import 'package:step_wise/ui/views/old_onboarding_view.dart/onboarding_view.dart';
 import 'package:step_wise/ui/views/onboarding/onboarding_view.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -19,9 +18,7 @@ import '../../../model/roadmap/roadmap_model.dart';
 part 'detailed_roadmap_mixin.dart';
 
 class DetailedRoadmapView extends StatefulWidget {
-  final RoadmapModel roadmapModel;
-
-  const DetailedRoadmapView({super.key, required this.roadmapModel});
+  const DetailedRoadmapView({super.key});
 
   @override
   State<DetailedRoadmapView> createState() => _DetailedRoadmapViewState();
@@ -29,40 +26,51 @@ class DetailedRoadmapView extends StatefulWidget {
 
 class _DetailedRoadmapViewState extends State<DetailedRoadmapView>
     with DetailedRoadmapMixin {
-  SharedPreferencesManager manager = SharedPreferencesManager();
+  final SharedPreferencesManager manager = SharedPreferencesManager();
+
 
   @override
   void initState() {
     super.initState();
-    _loadNextLessonAndProgress(); // Progress ve nextLesson yükleniyor
+    _loadNextLessonAndProgress();
   }
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        body: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              _buildHeader(),
-              Padding(
-                padding: const EdgeInsets.only(right: mPadding, left: lPadding),
-                child: buildList(),
-              ),
-            ],
+    return Obx(() {
+      if (controller.roadmapModel.value == null) {
+        return const Scaffold(
+          body: Center(child: CircularProgressIndicator()),
+        );
+      }
+      return SafeArea(
+        child: Scaffold(
+          body: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                _buildHeader(),
+                Padding(
+                  padding: const EdgeInsets.only(right: mPadding, left: lPadding),
+                  child: buildList(),
+                ),
+              ],
+            ),
           ),
         ),
-      ),
-    );
+      );
+    });
   }
 
-  Column buildList() {
-    var phases = widget.roadmapModel.phases;
+  Widget buildList() {
+    final phases = controller.roadmapModel.value?.phases;
+    if (phases == null) {
+      return const SizedBox();
+    }
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: List.generate(
-        phases!.length,
+        phases.length,
         (index) {
           var phase = phases[index];
           return buildIndex(index, phase, phases.length);
@@ -70,7 +78,8 @@ class _DetailedRoadmapViewState extends State<DetailedRoadmapView>
       ),
     );
   }
-   Widget _buildHeader() {
+
+  Widget _buildHeader() {
     return Container(
       color: primaryColor,
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
@@ -106,7 +115,7 @@ class _DetailedRoadmapViewState extends State<DetailedRoadmapView>
           ),
           32.h,
           Text(
-            controller.roadmapModel.title ?? "Roadmap",
+            controller.roadmapModel.value?.title ?? "Roadmap",
             style: const TextStyle(
               color: Colors.white,
               fontSize: 18,
@@ -155,26 +164,15 @@ class _DetailedRoadmapViewState extends State<DetailedRoadmapView>
     );
   }
 
-
   Row buildIndex(int index, RoadmapPhase phase, int totalPhases) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
-        // SizedBox(
-        //   height: bigCardSize * 1.45,
-        //   child: CustomPaint(
-        //     painter: TimelinePainter(
-        //       isFirst: index == 0,
-        //       isLast: index == totalPhases - 1,
-        //     ),
-        //   ),
-        // ),
-        // const SizedBox(width: 24),
         Expanded(
           child: Column(
             children: [
               Padding(
-                padding: const EdgeInsets.only(top:15,bottom:15),
+                padding: const EdgeInsets.only(top: 15, bottom: 15),
                 child: Text(
                   phase.title ?? "${index + 1}th Phase",
                   textAlign: TextAlign.start,
@@ -188,12 +186,12 @@ class _DetailedRoadmapViewState extends State<DetailedRoadmapView>
                   builder: (context, snapshot) {
                     if (snapshot.connectionState == ConnectionState.done) {
                       return ListView.separated(
-                     physics: const NeverScrollableScrollPhysics(),
+                        physics: const NeverScrollableScrollPhysics(),
                         itemCount: phase.topics!.length,
                         itemBuilder: (context, index) {
                           return CustomCard(
                             color: cardColor,
-                            height:smallCardSize ,
+                            height: smallCardSize,
                             child: ResourceItem(
                               onCheckedChanged: (bool isChecked) {
                                 controller.toggleChecked(phase, index);
@@ -201,7 +199,8 @@ class _DetailedRoadmapViewState extends State<DetailedRoadmapView>
                               isChecked: phase.topics![index].isChecked,
                               title:
                                   phase.topics![index].title ?? "No title found",
-                              url: phase.topics![index].resources != null && phase.topics![index].resources!.isNotEmpty
+                              url: phase.topics![index].resources != null &&
+                                      phase.topics![index].resources!.isNotEmpty
                                   ? phase.topics![index].resources![0].link
                                   : null,
                             ),
@@ -259,10 +258,10 @@ class _DetailedRoadmapViewState extends State<DetailedRoadmapView>
     SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.setDouble('progress', progress);
   }
-  
-   double calculatePhaseHeight(RoadmapPhase phase) {
-      return (phase.topics!.length)*(120+25);
-   }
+
+  double calculatePhaseHeight(RoadmapPhase phase) {
+    return (phase.topics!.length) * (120 + 25);
+  }
 }
 
 class ResourceItem extends StatelessWidget {
@@ -289,7 +288,6 @@ class ResourceItem extends StatelessWidget {
               onChanged: (bool? value) async {
                 if (value != null) {
                   onCheckedChanged(value);
-
                   SharedPreferences prefs =
                       await SharedPreferences.getInstance();
                   prefs.setBool(title, value);
@@ -299,9 +297,9 @@ class ResourceItem extends StatelessWidget {
         Expanded(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
-            children: [             
+            children: [
               Padding(
-                padding: const EdgeInsets.only(top:8.0),
+                padding: const EdgeInsets.only(top: 8.0),
                 child: Text(
                   title,
                   style: const TextStyle(
@@ -314,7 +312,8 @@ class ResourceItem extends StatelessWidget {
                 GestureDetector(
                   onTap: () async {
                     final Uri uri = Uri.parse(url!);
-                    await launchUrl(uri, mode: LaunchMode.externalApplication);
+                    await launchUrl(uri,
+                        mode: LaunchMode.externalApplication);
                   },
                   child: const Text(
                     "Suggested resource",

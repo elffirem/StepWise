@@ -1,21 +1,37 @@
 import 'package:get/get.dart';
+import 'package:step_wise/core/init/service_locator/service_locator.dart';
+import 'package:step_wise/core/services/network/network_service.dart';
 import 'package:step_wise/model/roadmap/roadmap_phase.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
 import '../model/roadmap/roadmap_model.dart';
+import '../service/roadmap/roadmap_service_impl.dart'; 
 
 class RoadmapController extends GetxController {
-  final RoadmapModel roadmapModel;
-  
+  Rxn<RoadmapModel> roadmapModel = Rxn<RoadmapModel>();
+  final RoadmapServiceImpl service =
+      RoadmapServiceImpl(networkService: sl<NetworkService>());
   var progress = 0.0.obs;
   var nextLesson = ''.obs;
 
-  RoadmapController(this.roadmapModel) {
-    _initialize();
+  @override
+  void onInit() {
+    super.onInit();
+    _fetchRoadmap();
+  }
+
+   void _fetchRoadmap() async {
+    final result = await service.getRoadmap();
+    result.fold(
+      (failure) => print('Error: ${failure.toString()}'),
+      (roadmap) {
+        roadmapModel.value = roadmap;
+        _initialize();
+      },
+    );
   }
 
   void _initialize() async {
-    await _loadProgressAndNextLesson(); 
+    await _loadProgressAndNextLesson();
     _calculateProgress();
     _findNextLesson();
   }
@@ -25,17 +41,22 @@ class RoadmapController extends GetxController {
     topic.isChecked.value = !topic.isChecked.value;
     _calculateProgress();
     _findNextLesson();
-    await _saveProgressAndNextLesson(); 
+    await _saveProgressAndNextLesson();
   }
 
   void _calculateProgress() {
-    final totalItems = roadmapModel.phases!.fold(0,
-        (previousValue, phase) => previousValue + (phase.topics?.length ?? 0));
-    final checkedItems = roadmapModel.phases!.fold(
-        0,
-        (previousValue, phase) =>
-            previousValue +
-            (phase.topics?.where((topic) => topic.isChecked.value).length ?? 0));
+    if (roadmapModel.value == null) return;
+
+    final totalItems = roadmapModel.value!.phases!.fold(
+      0,
+      (previousValue, phase) => previousValue + (phase.topics?.length ?? 0),
+    );
+    final checkedItems = roadmapModel.value!.phases!.fold(
+      0,
+      (previousValue, phase) =>
+          previousValue +
+          (phase.topics?.where((topic) => topic.isChecked.value).length ?? 0),
+    );
     progress.value = totalItems == 0 ? 0 : checkedItems / totalItems;
   }
 
@@ -44,7 +65,8 @@ class RoadmapController extends GetxController {
   }
 
   String? _getNextLesson() {
-    for (var phase in roadmapModel.phases!) {
+    if (roadmapModel.value == null) return null;
+    for (var phase in roadmapModel.value!.phases!) {
       for (var topic in phase.topics!) {
         if (!topic.isChecked.value) {
           return topic.title;

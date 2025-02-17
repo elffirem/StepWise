@@ -6,7 +6,7 @@ mixin DetailedRoadmapMixin on State<DetailedRoadmapView> {
   @override
   void initState() {
     super.initState();
-    controller = Get.put(RoadmapController(widget.roadmapModel));
+    controller = Get.put(RoadmapController());
   }
 
   @override

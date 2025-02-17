@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:step_wise/model/roadmap/roadmap_model.dart';
 import 'package:step_wise/ui/views/home/detailed_roadmap_view.dart';
 
 class DetailedRoadmapScreen extends StatelessWidget {
-  final RoadmapModel roadmapModel;
 
-  const DetailedRoadmapScreen({super.key, required this.roadmapModel});
+  const DetailedRoadmapScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -21,15 +19,15 @@ class DetailedRoadmapScreen extends StatelessWidget {
             ],
           ),
         ),
-        body: TabBarView(
+        body: const TabBarView(
           children: [
-            DetailedRoadmapView(roadmapModel: roadmapModel), // Roadmap sekmesi
-            const Center(
+            DetailedRoadmapView(), 
+            Center(
               child: Text(
                 'Quiz',
                 style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
               ),
-            ), // Quiz sekmesi
+            ),
           ],
         ),
       ),

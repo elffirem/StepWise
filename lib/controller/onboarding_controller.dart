@@ -75,18 +75,18 @@ Let's start by your name! """,
         assetPaths: [],
         positions: [],
       ),
-      // OnboardingPageModel(
-      //   title: "Could you please provide your professional background?",
-      //   description: "",
-      //   assetPaths: [],
-      //   positions: [],
-      // ),
-      // OnboardingPageModel(
-      //   title: "What do you want to learn?",
-      //   description: "",
-      //   assetPaths: [],
-      //   positions: [],
-      // ),
+      OnboardingPageModel(
+        title: "Could you please provide your professional background?",
+        description: "",
+        assetPaths: [],
+        positions: [],
+      ),
+      OnboardingPageModel(
+        title: "What do you want to learn?",
+        description: "",
+        assetPaths: [],
+        positions: [],
+      ),
     ];
 
     onboardingPages.assignAll(fetchedData);
