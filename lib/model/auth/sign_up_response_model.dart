@@ -1,14 +1,13 @@
 import 'package:equatable/equatable.dart';
 import 'package:json_annotation/json_annotation.dart';
-import 'package:vexana/vexana.dart';
+import 'package:net_kit/net_kit.dart';
 
 import '../user/user_model.dart';
 
 part 'sign_up_response_model.g.dart';
 
 @JsonSerializable()
-class SignUpResponseModel extends INetworkModel<SignUpResponseModel>
-    with EquatableMixin {
+class SignUpResponseModel extends INetKitModel with EquatableMixin {
   final String? token;
   final UserModel? user;
 

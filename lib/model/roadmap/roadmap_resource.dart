@@ -1,11 +1,11 @@
 import 'package:equatable/equatable.dart';
 import 'package:json_annotation/json_annotation.dart';
-import 'package:vexana/vexana.dart';
+import 'package:net_kit/net_kit.dart';
 
 part 'roadmap_resource.g.dart';
 
 @JsonSerializable()
-class RoadmapResource extends INetworkModel<RoadmapResource> with EquatableMixin {
+class RoadmapResource extends INetKitModel with EquatableMixin {
   final int? id;
   final String? type;
   final String? title;
@@ -23,7 +23,8 @@ class RoadmapResource extends INetworkModel<RoadmapResource> with EquatableMixin
   });
 
   @override
-  RoadmapResource fromJson(Map<String, dynamic> json) => RoadmapResource.fromJson(json);
+  RoadmapResource fromJson(Map<String, dynamic> json) =>
+      RoadmapResource.fromJson(json);
 
   factory RoadmapResource.fromJson(Map<String, dynamic> json) =>
       _$RoadmapResourceFromJson(json);

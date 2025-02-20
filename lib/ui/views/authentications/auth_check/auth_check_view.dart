@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:step_wise/core/services/local_storage/shared_preferences_manager.dart';
-import 'package:step_wise/core/services/network/network_service_impl.dart';
+import 'package:step_wise/core/services/network/model/token_model.dart';
 import 'package:step_wise/ui/views/main_scaffold.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../../core/init/service_locator/service_locator.dart';
 import '../../../../core/services/network/network_service.dart';

@@ -1,14 +1,14 @@
 import 'package:equatable/equatable.dart';
 import 'package:get/get.dart';
 import 'package:json_annotation/json_annotation.dart';
-import 'package:vexana/vexana.dart';
+import 'package:net_kit/net_kit.dart';
 
 import 'roadmap_resource.dart';
 
 part 'roadmap_topic.g.dart';
 
 @JsonSerializable()
-class RoadmapTopic extends INetworkModel<RoadmapTopic> with EquatableMixin {
+class RoadmapTopic extends INetKitModel with EquatableMixin {
   final int? id;
   final String? title;
   final String? description;

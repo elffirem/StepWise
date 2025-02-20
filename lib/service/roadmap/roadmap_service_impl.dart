@@ -1,7 +1,7 @@
+import 'package:net_kit/net_kit.dart';
 import 'package:step_wise/core/utils/typedefs.dart';
 import 'package:step_wise/model/roadmap/create_roadmap_request_model.dart';
 import 'package:step_wise/service/roadmap/roadmap_service.dart';
-import 'package:vexana/vexana.dart';
 
 import '../../core/constants/api_const.dart';
 import '../../core/services/network/network_service.dart';
@@ -15,21 +15,20 @@ class RoadmapServiceImpl implements RoadmapService {
 
   @override
   ResultFuture<RoadmapModel> getRoadmap() async {
-    return _networkService.send<RoadmapModel, RoadmapModel>(
+    return _networkService.requestModel<RoadmapModel>(
       APIConst.roadmap,
       parseModel: RoadmapModel(),
-      method: RequestType.GET,
+      method: RequestMethod.get,
     );
   }
 
   @override
   ResultFuture<void> createRoadmap(
       CreateRoadmapRequestModel createRoadmapRequestModel) async {
-    return _networkService.send<EmptyModel, EmptyModel>(
+    return _networkService.requestVoid(
       APIConst.roadmap,
-      parseModel: EmptyModel(),
-      method: RequestType.POST,
-      data: createRoadmapRequestModel.toJson(),
+      method: RequestMethod.post,
+      body: createRoadmapRequestModel.toJson(),
     );
   }
 }

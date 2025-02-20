@@ -11,6 +11,7 @@ import 'package:step_wise/ui/views/loading/loading_view.dart';
 import 'package:step_wise/ui/views/onboarding/timeline_view.dart';
 
 import '../../core/init/service_locator/service_locator.dart';
+import '../../core/services/network/model/token_model.dart';
 
 class SignUpController extends GetxController {
   final AuthService _authService =
@@ -72,7 +73,11 @@ class SignUpController extends GetxController {
         if (response.token == null) {
           return;
         }
-        sl<NetworkService>().setToken(response.token!);
+        sl<NetworkService>().setToken(
+            token: TokenModel(
+          accessToken: response.token!,
+          refreshToken: '',
+        ));
 
         // Save token and username to local
         final sharedPreferencesManager = SharedPreferencesManager();

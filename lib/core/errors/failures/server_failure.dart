@@ -1,4 +1,5 @@
-import 'exceptions/server_exception.dart';
+import 'package:net_kit/net_kit.dart';
+
 import 'failure.dart';
 
 final class ServerFailure extends Failure {
@@ -7,6 +8,6 @@ final class ServerFailure extends Failure {
     required super.statusCode,
   });
 
-  ServerFailure.fromException(ServerException exception)
+  ServerFailure.fromException(ApiException exception)
       : this(message: exception.message, statusCode: exception.statusCode);
 }

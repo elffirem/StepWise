@@ -22,11 +22,12 @@ class _SignInViewState extends State<SignInView> {
   final SignInController _signInController = Get.put(SignInController());
 
   void _signIn() {
+    _emailController.text = "test@123.csdf";
+    _passwordController.text = "123456123";
     if (_formKey.currentState!.validate()) {
       _signInController.setEmail(_emailController.text);
       _signInController.setPassword(_passwordController.text);
-      _signInController
-          .signIn(); 
+      _signInController.signIn();
     }
   }
 
@@ -132,7 +133,8 @@ class _SignInViewState extends State<SignInView> {
                         context,
                         MaterialPageRoute(
                           builder: (context) => SignUpView(
-                            createRoadmapRequestModel: CreateRoadmapRequestModel(),
+                            createRoadmapRequestModel:
+                                CreateRoadmapRequestModel(),
                             signUpRequestModel: SignUpRequestModel(),
                           ),
                         ),

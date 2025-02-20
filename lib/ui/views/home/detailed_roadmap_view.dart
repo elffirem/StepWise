@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:step_wise/controller/onboarding_controller.dart';
 import 'package:step_wise/controller/roadmap_controller.dart';
 import 'package:step_wise/core/constants/constants.dart';
@@ -8,12 +9,8 @@ import 'package:step_wise/core/services/local_storage/shared_preferences_manager
 import 'package:step_wise/model/roadmap/roadmap_phase.dart';
 import 'package:step_wise/model/roadmap/roadmap_topic.dart';
 import 'package:step_wise/ui/components/custom_card.dart';
-import 'package:step_wise/ui/components/timeline_painter.dart';
 import 'package:step_wise/ui/views/onboarding/onboarding_view.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
-
-import '../../../model/roadmap/roadmap_model.dart';
 
 part 'detailed_roadmap_mixin.dart';
 
@@ -27,7 +24,6 @@ class DetailedRoadmapView extends StatefulWidget {
 class _DetailedRoadmapViewState extends State<DetailedRoadmapView>
     with DetailedRoadmapMixin {
   final SharedPreferencesManager manager = SharedPreferencesManager();
-
 
   @override
   void initState() {
@@ -51,7 +47,8 @@ class _DetailedRoadmapViewState extends State<DetailedRoadmapView>
               children: [
                 _buildHeader(),
                 Padding(
-                  padding: const EdgeInsets.only(right: mPadding, left: lPadding),
+                  padding:
+                      const EdgeInsets.only(right: mPadding, left: lPadding),
                   child: buildList(),
                 ),
               ],
@@ -197,8 +194,8 @@ class _DetailedRoadmapViewState extends State<DetailedRoadmapView>
                                 controller.toggleChecked(phase, index);
                               },
                               isChecked: phase.topics![index].isChecked,
-                              title:
-                                  phase.topics![index].title ?? "No title found",
+                              title: phase.topics![index].title ??
+                                  "No title found",
                               url: phase.topics![index].resources != null &&
                                       phase.topics![index].resources!.isNotEmpty
                                   ? phase.topics![index].resources![0].link
@@ -312,8 +309,7 @@ class ResourceItem extends StatelessWidget {
                 GestureDetector(
                   onTap: () async {
                     final Uri uri = Uri.parse(url!);
-                    await launchUrl(uri,
-                        mode: LaunchMode.externalApplication);
+                    await launchUrl(uri, mode: LaunchMode.externalApplication);
                   },
                   child: const Text(
                     "Suggested resource",

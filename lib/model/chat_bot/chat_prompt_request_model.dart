@@ -1,12 +1,11 @@
 import 'package:equatable/equatable.dart';
 import 'package:json_annotation/json_annotation.dart';
-import 'package:vexana/vexana.dart';
+import 'package:net_kit/net_kit.dart';
 
 part 'chat_prompt_request_model.g.dart';
 
 @JsonSerializable()
-class ChatPromptRequestModel extends INetworkModel<ChatPromptRequestModel>
-    with EquatableMixin {
+class ChatPromptRequestModel extends INetKitModel with EquatableMixin {
   ChatPromptRequestModel({
     this.prompt,
     this.sessionId,

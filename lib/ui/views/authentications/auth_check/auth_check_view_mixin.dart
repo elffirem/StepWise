@@ -12,18 +12,20 @@ mixin AuthCheckViewMixin on State<AuthCheckView> {
     try {
       final sharedPreferencesManager = SharedPreferencesManager();
       await sharedPreferencesManager.init();
-      String? token = sharedPreferencesManager.getString('token');//TODO controller da olmalı
+      String? token = sharedPreferencesManager
+          .getString('token'); //TODO controller da olmalı
       //const String token = "mockedToken";
 
-      if (token !=null && token.isNotEmpty) {
-        networkManager.setToken(token);
+      if (token != null && token.isNotEmpty) {
+        networkManager.setToken(
+            token: TokenModel(accessToken: token, refreshToken: ''));
       }
       WidgetsBinding.instance.addPostFrameCallback(
         (timeStamp) {
           Navigator.pushReplacement(
             context,
             MaterialPageRoute(
-              builder: (context) => (token ==null || token.isEmpty)
+              builder: (context) => (token == null || token.isEmpty)
                   ? const OnboardingView()
                   : const MainScaffold(),
             ),

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:step_wise/ui/components/city_map_section.dart';
 import 'package:step_wise/ui/components/time_control_section.dart';
 import 'package:step_wise/ui/components/user_status_section.dart';

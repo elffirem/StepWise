@@ -1,17 +1,18 @@
-import 'package:vexana/vexana.dart';
 import 'package:equatable/equatable.dart';
 import 'package:json_annotation/json_annotation.dart';
+import 'package:net_kit/net_kit.dart';
+
 import 'roadmap_topic.dart';
 
 part 'roadmap_phase.g.dart';
 
 @JsonSerializable()
-class RoadmapPhase extends INetworkModel<RoadmapPhase> with EquatableMixin {
-final  int? id;
-final  String? title;
-final  String? duration;
-final  String? imageUrl;
-final  List<RoadmapTopic>? topics;
+class RoadmapPhase extends INetKitModel with EquatableMixin {
+  final int? id;
+  final String? title;
+  final String? duration;
+  final String? imageUrl;
+  final List<RoadmapTopic>? topics;
 
   RoadmapPhase({
     this.id,
@@ -22,9 +23,11 @@ final  List<RoadmapTopic>? topics;
   });
 
   @override
-  RoadmapPhase fromJson(Map<String, dynamic> json) => RoadmapPhase.fromJson(json);
+  RoadmapPhase fromJson(Map<String, dynamic> json) =>
+      RoadmapPhase.fromJson(json);
 
-  factory RoadmapPhase.fromJson(Map<String, dynamic> json) => _$RoadmapPhaseFromJson(json);
+  factory RoadmapPhase.fromJson(Map<String, dynamic> json) =>
+      _$RoadmapPhaseFromJson(json);
 
   @override
   Map<String, dynamic>? toJson() => _$RoadmapPhaseToJson(this);

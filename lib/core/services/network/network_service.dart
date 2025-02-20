@@ -1,16 +1,33 @@
-import 'package:vexana/vexana.dart';
+import 'package:net_kit/net_kit.dart';
+import 'package:step_wise/core/services/network/model/token_model.dart';
 
 import '../../utils/typedefs.dart';
 
 abstract class NetworkService {
-  ResultFuture<R> send<T extends INetworkModel<T>, R>(
+  ResultFuture<T> requestModel<T extends INetKitModel>(
     String path, {
     required T parseModel,
-    required RequestType method,
-    dynamic data,
+    required RequestMethod method,
+    DataMap? body,
+    bool? containsAccessToken,
+  });
+
+  ResultFuture<List<T>> requestList<T extends INetKitModel>(
+    String path, {
+    required T parseModel,
+    required RequestMethod method,
+    DataMap? body,
+    bool? containsAccessToken,
+  });
+
+  ResultFuture<void> requestVoid(
+    String path, {
+    required RequestMethod method,
+    DataMap? body,
+    bool? containsAccessToken,
   });
 
   void clearHeader();
 
-  void setToken(String token);
+  void setToken({required TokenModel token});
 }

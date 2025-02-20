@@ -1,11 +1,11 @@
 import 'package:equatable/equatable.dart';
 import 'package:json_annotation/json_annotation.dart';
-import 'package:vexana/vexana.dart';
+import 'package:net_kit/net_kit.dart';
 
 part 'user_model.g.dart';
 
 @JsonSerializable()
-class UserModel extends INetworkModel<UserModel> with EquatableMixin {
+class UserModel extends INetKitModel with EquatableMixin {
   UserModel({
     this.fullName,
     this.purpose,

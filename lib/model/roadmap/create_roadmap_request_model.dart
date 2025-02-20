@@ -1,12 +1,11 @@
 import 'package:equatable/equatable.dart';
 import 'package:json_annotation/json_annotation.dart';
-import 'package:vexana/vexana.dart';
+import 'package:net_kit/net_kit.dart';
 
 part 'create_roadmap_request_model.g.dart';
 
 @JsonSerializable()
-class CreateRoadmapRequestModel extends INetworkModel<CreateRoadmapRequestModel>
-    with EquatableMixin {
+class CreateRoadmapRequestModel extends INetKitModel with EquatableMixin {
   CreateRoadmapRequestModel({
     this.professionalBackground,
     this.goal,
