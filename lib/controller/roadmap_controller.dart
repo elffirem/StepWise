@@ -22,7 +22,7 @@ class RoadmapController extends GetxController {
    void _fetchRoadmap() async {
     final result = await service.getRoadmap();
     result.fold(
-      (failure) => print('Error: ${failure.toString()}'),
+      (failure) => print('Error: ${failure.toString()}'),// TODO ekranda gösterelim
       (roadmap) {
         roadmapModel.value = roadmap;
         _initialize();
