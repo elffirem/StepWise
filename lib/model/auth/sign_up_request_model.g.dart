@@ -11,7 +11,7 @@ SignUpRequestModel _$SignUpRequestModelFromJson(Map<String, dynamic> json) =>
       email: json['email'] as String?,
       password: json['password'] as String?,
       fullName: json['fullName'] as String?,
-      purpose: json['purpose'] as String?,
+   
     );
 
 Map<String, dynamic> _$SignUpRequestModelToJson(SignUpRequestModel instance) =>
@@ -19,5 +19,5 @@ Map<String, dynamic> _$SignUpRequestModelToJson(SignUpRequestModel instance) =>
       'email': instance.email,
       'password': instance.password,
       'fullName': instance.fullName,
-      'purpose': instance.purpose,
+
     };

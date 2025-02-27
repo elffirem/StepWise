@@ -85,7 +85,6 @@ class TodoView extends StatelessWidget {
               width: 1.5,
             ),
           ),
-
           child: TextField(
             readOnly: true,
             onTap: () {
@@ -106,31 +105,12 @@ class TodoView extends StatelessWidget {
               ),
               suffixIcon: Padding(
                 padding: const EdgeInsets.all(4.0),
-                child: ElevatedButton(
+                child: IconButton(
                   onPressed: () => _openBottomSheet(context),
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color(0xFF0D224F),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                  ),
-                  child: const Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Text(
-                        "Add",
-                        style: TextStyle(
-                          fontFamily: "Sora",
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white,
-                        ),
-                      ),
-                      SizedBox(width: 4),
-                      Icon(
-                        Icons.auto_awesome,
-                        color: Color.fromARGB(255, 216, 195, 8),
-                      ),
-                    ],
+                  icon: Image.asset(
+                    "assets/images/right_arrow.png",
+                    width: 30,
+                    height: 30,
                   ),
                 ),
               ),

@@ -24,6 +24,7 @@ class SignUpView extends StatefulWidget {
 
 class _SignUpViewState extends State<SignUpView> {
   final _formKey = GlobalKey<FormState>();
+  final TextEditingController _fullNameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final SignUpController _signUpController = Get.put(SignUpController());
@@ -33,8 +34,7 @@ class _SignUpViewState extends State<SignUpView> {
   void initState() {
     super.initState();
     _signUpController.setSignUpRequestModel(widget.signUpRequestModel);
-    _signUpController.setCreateRoadmapRequestModel(
-        widget.createRoadmapRequestModel);
+    _signUpController.setCreateRoadmapRequestModel(widget.createRoadmapRequestModel);
   }
 
   @override
@@ -71,10 +71,35 @@ class _SignUpViewState extends State<SignUpView> {
                   const Spacer(flex: 2),
                   Center(
                     child: TextFormField(
+                      controller: _fullNameController,
+                      decoration: const InputDecoration(
+                        prefixIcon: Icon(Icons.person_outline, color: primaryColor),
+                        labelText: 'Full Name',
+                        labelStyle: TextStyle(color: primaryColor),
+                        border: UnderlineInputBorder(
+                          borderSide: BorderSide(color: primaryColor),
+                        ),
+                        enabledBorder: UnderlineInputBorder(
+                          borderSide: BorderSide(color: primaryColor),
+                        ),
+                        focusedBorder: UnderlineInputBorder(
+                          borderSide: BorderSide(color: primaryColor),
+                        ),
+                      ),
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Please enter your full name';
+                        }
+                        return null;
+                      },
+                    ),
+                  ),
+                  const SizedBox(height: 20),
+                  Center(
+                    child: TextFormField(
                       controller: _emailController,
                       decoration: const InputDecoration(
-                        prefixIcon:
-                            Icon(Icons.email_outlined, color: primaryColor),
+                        prefixIcon: Icon(Icons.email_outlined, color: primaryColor),
                         labelText: emailLabel,
                         labelStyle: TextStyle(color: primaryColor),
                         border: UnderlineInputBorder(
@@ -90,8 +115,7 @@ class _SignUpViewState extends State<SignUpView> {
                       validator: (value) {
                         if (value == null || value.isEmpty) {
                           return pleaseEnterYourEmail;
-                        } else if (!RegExp(r'^[^@]+@[^@]+\.[^@]+')
-                            .hasMatch(value)) {
+                        } else if (!RegExp(r'^[^@]+@[^@]+\.[^@]+').hasMatch(value)) {
                           return pleaseEnterAValidEmail;
                         }
                         return null;
@@ -104,8 +128,7 @@ class _SignUpViewState extends State<SignUpView> {
                       controller: _passwordController,
                       obscureText: true,
                       decoration: const InputDecoration(
-                        prefixIcon:
-                            Icon(Icons.lock_outline, color: primaryColor),
+                        prefixIcon: Icon(Icons.lock_outline, color: primaryColor),
                         labelText: passwordLabel,
                         labelStyle: TextStyle(color: primaryColor),
                         border: UnderlineInputBorder(
@@ -141,10 +164,9 @@ class _SignUpViewState extends State<SignUpView> {
                                 setState(() {
                                   _isLoading = true;
                                 });
-                                _signUpController
-                                    .setEmail(_emailController.text);
-                                _signUpController
-                                    .setPassword(_passwordController.text);
+                                _signUpController.setFullName(_fullNameController.text);
+                                _signUpController.setEmail(_emailController.text);
+                                _signUpController.setPassword(_passwordController.text);
                                 await _signUpController.signUp();
                                 setState(() {
                                   _isLoading = false;

@@ -100,8 +100,7 @@ class _OnboardingViewState extends State<OnboardingView> with OnboardingMixin {
                                             SignUpRequestModel(
                                           fullName: onboardingController
                                               .nameController.text,
-                                          purpose:
-                                              onboardingController.goal.value,
+                                        
                                         ),
                                       ),
                                     );

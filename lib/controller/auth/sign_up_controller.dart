@@ -8,6 +8,7 @@ import 'package:step_wise/service/auth/auth_service_impl.dart';
 import 'package:step_wise/service/roadmap/roadmap_service.dart';
 import 'package:step_wise/service/roadmap/roadmap_service_impl.dart';
 import 'package:step_wise/ui/views/loading/loading_view.dart';
+import 'package:step_wise/ui/views/main_scaffold.dart';
 import 'package:step_wise/ui/views/onboarding/timeline_view.dart';
 
 import '../../core/init/service_locator/service_locator.dart';
@@ -33,7 +34,8 @@ class SignUpController extends GetxController {
     _createRoadmapRequestModel = createRoadmapRequestModel;
   }
 
-  void setUserFullName(String fullName) {
+  // "purpose" alanı kaldırıldığı için ilgili metod da kaldırıldı.
+  void setFullName(String fullName) {
     _signUpRequestModel = _signUpRequestModel.copyWith(fullName: fullName);
   }
 
@@ -43,10 +45,6 @@ class SignUpController extends GetxController {
 
   void setPassword(String password) {
     _signUpRequestModel = _signUpRequestModel.copyWith(password: password);
-  }
-
-  void setPurpose(String purpose) {
-    _signUpRequestModel = _signUpRequestModel.copyWith(purpose: purpose);
   }
 
   void setProfessionalBackground(String professionalBackground) {
@@ -60,7 +58,7 @@ class SignUpController extends GetxController {
   }
 
   Future<void> signUp() async {
-    Get.to(() => const LoadingView());
+     //Get.to(() => const LoadingView());
 
     final signUpResult = await _authService.signUp(_signUpRequestModel);
     String? errorReturn;
@@ -74,38 +72,29 @@ class SignUpController extends GetxController {
           return;
         }
         sl<NetworkService>().setToken(
-            token: TokenModel(
-          accessToken: response.token!,
-          refreshToken: '',
-        ));
+          token: TokenModel(
+            accessToken: response.token!,
+            refreshToken: '',
+          ),
+        );
 
-        // Save token and username to local
+        // Token ve kullanıcı adını local alana kaydet
         final sharedPreferencesManager = SharedPreferencesManager();
         await sharedPreferencesManager.setString('token', response.token!);
         await sharedPreferencesManager.setString(
-            'username', response.user?.fullName ?? '');
+          'username', response.user?.fullName ?? '',
+        );
 
         if (response.token != null) {
-          await roadmapService.createRoadmap(_createRoadmapRequestModel);
-
-          /// Waiting for the roadmap to be created
-          await Future.delayed(const Duration(seconds: 35));
-          final userRoadmap = await roadmapService.getRoadmap();
-          userRoadmap.fold(
-            (error) {
-              errorReturn = error.message;
-            },
-            (roadmap) {
-              Get.off(() => TimelineView(roadmapModel: roadmap));
-            },
-          );
+           Get.offAll(() => const MainScaffold());
+        
         }
       },
     );
 
     if (errorReturn != null) {
       Get.snackbar('Error', errorReturn ?? 'An error occurred');
-      Get.back(); // Get back if there is error
+      Get.back(); // Hata durumunda geri dön
     }
   }
 }

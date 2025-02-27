@@ -3,10 +3,10 @@ import 'package:get/get.dart';
 import 'package:step_wise/controller/navigation_controller.dart';
 import 'package:step_wise/core/constants/constants.dart';
 import 'package:step_wise/service/roadmap/roadmap_service_impl.dart';
-import 'package:step_wise/ui/views/chat_bot/chat_bot_view.dart';
+import 'package:step_wise/ui/views/focus/focus_mode_view.dart';
 import 'package:step_wise/ui/views/home/detailed_roadmap_view.dart';
 import 'package:step_wise/ui/views/mental_roadmap/mood_selection/mood_selection_view.dart';
-import 'package:step_wise/ui/views/tools/tools_view.dart';
+import 'package:step_wise/ui/views/todo_view/todo_view.dart';
 
 import '../../core/init/service_locator/service_locator.dart';
 import '../../core/services/network/network_service.dart';
@@ -53,9 +53,13 @@ class _MainScaffoldState extends State<MainScaffold> {
   }
 
   Icon _getIcon(
-      int index, int currentIndex, IconData filledIcon, IconData outlinedIcon) {
+    int currentIndex,
+    int itemIndex,
+    IconData filledIcon,
+    IconData outlinedIcon,
+  ) {
     return Icon(
-      currentIndex == index ? filledIcon : outlinedIcon,
+      currentIndex == itemIndex ? filledIcon : outlinedIcon,
       color: primaryColor,
     );
   }
@@ -63,16 +67,16 @@ class _MainScaffoldState extends State<MainScaffold> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body:  PageView(
-              controller: _pageController,
-              onPageChanged: _onPageChanged,
-              children: const [
-                DetailedRoadmapView(),
-                ChatBotView(),
-                ToolsView(),
-                MoodSelectionView(),
-              ],
-            ),
+      body: PageView(
+        controller: _pageController,
+        onPageChanged: _onPageChanged,
+        children:  [
+          DetailedRoadmapView(),
+          const TodoView(),
+          const FocusModeView(),
+          const MoodSelectionView(),
+        ],
+      ),
       bottomNavigationBar: Obx(
         () {
           final currentIndex =
@@ -84,23 +88,34 @@ class _MainScaffoldState extends State<MainScaffold> {
             onTap: _onItemTapped,
             items: [
               BottomNavigationBarItem(
-                icon:
-                    _getIcon(currentIndex, 0, Icons.home, Icons.home_outlined),
+                icon: _getIcon(currentIndex, 0, Icons.home, Icons.home_outlined),
                 label: 'Home',
               ),
               BottomNavigationBarItem(
-                icon: _getIcon(currentIndex, 1, Icons.chat_bubble,
-                    Icons.chat_bubble_outline),
-                label: 'Chatbot',
-              ),
-              BottomNavigationBarItem(
-                icon: _getIcon(currentIndex, 2, Icons.grid_view_rounded,
-                    Icons.grid_view_outlined),
-                label: 'Apply tools',
+                icon: _getIcon(
+                  currentIndex,
+                  1,
+                  Icons.format_list_bulleted,
+                  Icons.format_list_bulleted,
+                ),
+                label: 'Todo',
               ),
               BottomNavigationBarItem(
                 icon: _getIcon(
-                    currentIndex, 3, Icons.favorite, Icons.favorite_border),
+                  currentIndex,
+                  2,
+                  Icons.access_time_filled,
+                  Icons.access_time,
+                ),
+                label: 'Focus',
+              ),
+              BottomNavigationBarItem(
+                icon: _getIcon(
+                  currentIndex,
+                  3,
+                  Icons.favorite,
+                  Icons.favorite_border,
+                ),
                 label: 'Mental Roadmap',
               ),
             ],

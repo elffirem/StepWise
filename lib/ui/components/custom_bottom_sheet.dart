@@ -77,64 +77,38 @@ class _CustomBottomSheetState extends State<CustomBottomSheet> {
                       color: Colors.black,
                     ),
                     controller: _taskController,
-                    maxLines: 3,
-                    decoration: const InputDecoration(
-                      hintText: "Write your task here...",
-                      hintStyle: TextStyle(
-                        fontFamily: "Sora",
-                        fontSize: 16,
-                        color: Colors.grey,
-                      ),
-                      border: InputBorder.none,
-                      contentPadding: EdgeInsets.symmetric(
-                        horizontal: 12,
-                        vertical: 12,
-                      ),
-                    ),
+                    minLines: 1,
+                    maxLines: 4,
+                    decoration: InputDecoration(
+                        hintText: "Write your task here...",
+                        hintStyle: const TextStyle(
+                          fontFamily: "Sora",
+                          fontSize: 16,
+                          color: Colors.grey,
+                        ),
+                        border: InputBorder.none,
+                        contentPadding: const EdgeInsets.symmetric(
+                          horizontal: 12,
+                          vertical: 12,
+                        ),
+                        suffixIcon: IconButton(
+                              onPressed: () {
+                                final text = _taskController.text.trim();
+                                if (text.isNotEmpty) {
+                                  controller.addTask(
+                                      text, controller.selectedDate.value);
+                                  Navigator.of(context).pop();
+                                }
+                              },
+                              icon: Image.asset(
+                                "assets/images/right_arrow.png",
+                                width: 30,
+                                height: 30,
+                              ),
+                            ),),
                   ),
                 ),
               ),
-
-              // "Add" butonu (buton, TodoView'deki ile aynı)
-              Padding(
-                padding: const EdgeInsets.only(right: 16, bottom: 16),
-                child: Align(
-                  alignment: Alignment.centerRight,
-                  child: ElevatedButton(
-                    onPressed: () {
-                      final text = _taskController.text.trim();
-                      if (text.isNotEmpty) {
-                        controller.addTask(text, controller.selectedDate.value);
-                        Navigator.of(context).pop();
-                      }
-                    },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: const Color(0xFF0D224F),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                    ),
-                    child: const Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Text(
-                          "Add",
-                          style: TextStyle(
-                            fontFamily: "Sora",
-                            fontWeight: FontWeight.bold,
-                            color: Colors.white,
-                          ),
-                        ),
-                        SizedBox(width: 4),
-                        Icon(
-                          Icons.auto_awesome,
-                          color: Color.fromARGB(255, 216, 195, 8),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              )
             ],
           ),
         ),

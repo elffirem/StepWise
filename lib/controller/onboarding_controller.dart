@@ -168,7 +168,6 @@ Let's start by your name! """,
       if (currentPage.value == 7) {
         signUpRequestModel = signUpRequestModel.copyWith(
           fullName: nameController.text,
-          purpose: goal.value,
         );
         createRoadmapRequestModel = createRoadmapRequestModel.copyWith(
           professionalBackground: professionalBackgroundController.text,
